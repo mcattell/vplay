@@ -8,7 +8,8 @@ Window {
     color: "#807F15"
     height: Screen.desktopAvailableHeight
     width: Screen.desktopAvailableWidth
-
+    property alias videoPosition : video.position
+    property alias videoDuration : video.duration
 
     Component.onCompleted: {
         showTimer.start()
@@ -36,16 +37,19 @@ Window {
                 name: "idle"
                 PropertyChanges{target: frontScreen; height: mainWindow.height - controls.height}
                 PropertyChanges{target: controls; y:  frontScreen.height}
+                PropertyChanges{target: progressBar; y: controls.y - progressBar.height}
             },
             State {
                 name: "playing"
                 PropertyChanges{target: frontScreen; height: mainWindow.height}
-                PropertyChanges{target: controls; y:  mainWindow.height}
+                PropertyChanges{target: controls; y:  mainWindow.height + progressBar.height}
+                PropertyChanges{target: progressBar; y: mainWindow.height}
             },
             State {
                 name: "playing_controls_shown"
                 PropertyChanges{target: frontScreen; height: mainWindow.height - controls.height}
                 PropertyChanges{target: controls; y:  frontScreen.height}
+                PropertyChanges{target: progressBar; y: controls.y - progressBar.height}
             }
         ]
 
@@ -81,8 +85,9 @@ Window {
             height : parent.height
             source: "file:///home/pi/liza.avi"
 
+
             onPlaying: {
-               frontScreen.state = "playing_controls_shown"
+                frontScreen.state = "playing_controls_shown"
             }
             onStopped: {
                 frontScreen.state = "idle"
@@ -95,8 +100,8 @@ Window {
                 anchors.fill: parent
                 onClicked: {
                     //&& ((video.duration - video.position) > 3000)
-                     if (video.playbackState === MediaPlayer.PlayingState || video.playbackState === MediaPlayer.PausedState)
-                       frontScreen.state = "playing_controls_shown"
+                    if (video.playbackState === MediaPlayer.PlayingState || video.playbackState === MediaPlayer.PausedState)
+                        frontScreen.state = "playing_controls_shown"
 
                 }
             }
@@ -106,6 +111,10 @@ Window {
             //            Keys.onLeftPressed: video.seek(video.position - 5000)
             //            Keys.onRightPressed: video.seek(video.position + 5000)
         }
+
+    }
+    ProgressBar {
+        id: progressBar
 
     }
 

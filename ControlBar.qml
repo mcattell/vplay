@@ -5,7 +5,7 @@ Item {
 
     id: controlBar
     width: parent.width
-    height: parent.height / 8
+    height: parent.height / 10
 
     function onPlayPressed() {
 
@@ -31,7 +31,7 @@ Item {
     }
 
     function onNextPressed() {
-
+        //TODO
     }
 
     Rectangle {
