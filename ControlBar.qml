@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtMultimedia 5.6
 
 Item {
 
@@ -6,7 +7,32 @@ Item {
     width: parent.width
     height: parent.height / 8
 
+    function onPlayPressed() {
 
+
+        if (video.playbackState === MediaPlayer.PlayingState) {
+
+            video.pause()
+        }
+        else if (video.playbackState === MediaPlayer.PausedState) {
+
+            video.play()
+        }
+
+        else if (video.playbackState === MediaPlayer.StoppedState  ) {
+
+            video.play()
+        }
+    }
+
+    function onStopPressed() {
+
+        video.stop()
+    }
+
+    function onNextPressed() {
+
+    }
 
     Rectangle {
         id: background
@@ -17,9 +43,9 @@ Item {
 
             ControlButton {
                 id: play
-                buttonSourceImage: "qrc:/images/images/play.png"
+                buttonSourceImage: (video.playbackState === MediaPlayer.PlayingState) ? "qrc:/images/images/pause.png" : "qrc:/images/images/play.png"
                 Component.onCompleted: {
-                    controlPressed.connect(video.play)
+                    controlPressed.connect(controlBar.onPlayPressed)
                 }
             }
             Item {
@@ -30,7 +56,7 @@ Item {
                 id: stop
                 buttonSourceImage: "qrc:/images/images/stop.png"
                 Component.onCompleted: {
-                    controlPressed.connect(video.stop)
+                    controlPressed.connect(controlBar.onStopPressed)
                 }
             }
             Item {
@@ -41,7 +67,7 @@ Item {
                 id: next
                 buttonSourceImage: "qrc:/images/images/next.png"
                 Component.onCompleted: {
-                  //  controlPressed.connect(video.next)
+                    controlPressed.connect(controlBar.onNextPressed)
                 }
             }
         }

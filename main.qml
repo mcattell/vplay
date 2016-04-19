@@ -14,7 +14,7 @@ Window {
         showTimer.start()
     }
 
-    //!(video.playbackState === MediaPlayer.PlayingState)
+
     Item {
 
         id: frontScreen
@@ -22,7 +22,14 @@ Window {
         width: mainWindow.width
         state: "idle"
 
+        onStateChanged: {
+            if (state === "playing_controls_shown") {
 
+                showTimer.start()
+            }
+
+
+        }
 
         states : [
             State {
@@ -38,7 +45,7 @@ Window {
             State {
                 name: "playing_controls_shown"
                 PropertyChanges{target: frontScreen; height: mainWindow.height - controls.height}
-                PropertyChanges{target: controls; y:  mainWindow.height}
+                PropertyChanges{target: controls; y:  frontScreen.height}
             }
         ]
 
@@ -61,7 +68,10 @@ Window {
             running: false
             onTriggered: {
 
-
+                if (frontScreen.state === "playing_controls_shown")
+                    frontScreen.state = "playing"
+                else if (frontScreen.state === "playing")
+                    frontScreen.state = "playing_controls_shown"
             }
         }
 
@@ -71,11 +81,23 @@ Window {
             height : parent.height
             source: "file:///home/pi/liza.avi"
 
+            onPlaying: {
+               frontScreen.state = "playing_controls_shown"
+            }
+            onStopped: {
+                frontScreen.state = "idle"
+            }
+            onPaused: {
+                frontScreen.state = "playing_controls_shown"
+            }
+
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    console.log(video.duration - video.position)
-                    showTimer.start()
+                    //&& ((video.duration - video.position) > 3000)
+                     if (video.playbackState === MediaPlayer.PlayingState || video.playbackState === MediaPlayer.PausedState)
+                       frontScreen.state = "playing_controls_shown"
+
                 }
             }
 
