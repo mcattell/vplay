@@ -47,9 +47,11 @@ Window {
             },
             State {
                 name: "playing_controls_shown"
-                PropertyChanges{target: frontScreen; height: mainWindow.height - controls.height}
-                PropertyChanges{target: controls; y:  frontScreen.height}
+                PropertyChanges{target: frontScreen; height: mainWindow.height}
+                PropertyChanges{target: controls; y:  frontScreen.height - controls.height}
                 PropertyChanges{target: progressBar; y: controls.y - progressBar.height}
+                PropertyChanges{target: controls; backgroundOpacity: 0.4}
+                PropertyChanges{target: progressBar; barOpacity: 0.4}
             }
         ]
 
@@ -99,17 +101,12 @@ Window {
             MouseArea {
                 anchors.fill: parent
                 onClicked: {
-                    //&& ((video.duration - video.position) > 3000)
+
                     if (video.playbackState === MediaPlayer.PlayingState || video.playbackState === MediaPlayer.PausedState)
                         frontScreen.state = "playing_controls_shown"
-
                 }
             }
-
             focus: true
-            //            Keys.onSpacePressed: video.playbackState == MediaPlayer.PlayingState ? video.pause() : video.play()
-            //            Keys.onLeftPressed: video.seek(video.position - 5000)
-            //            Keys.onRightPressed: video.seek(video.position + 5000)
         }
 
     }

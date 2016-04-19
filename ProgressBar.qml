@@ -3,12 +3,12 @@ import QtQuick 2.0
 Item {
 
     id: progress
-    height: mainWindow.height / 40
+    height: mainWindow.height / 100
     width: mainWindow.width
     property real position
     property real playedWidth
     property real unplayedWidth
-
+    property alias barOpacity : unplayed.opacity
     Timer {
         id: updateTimer
         interval: 500
@@ -42,6 +42,7 @@ Item {
             color: "white"
             width: 8
             height: progress.height
+
         }
 
         Rectangle {
@@ -52,3 +53,5 @@ Item {
         }
     }
 }
+//            Keys.onLeftPressed: video.seek(video.position - 5000)
+//            Keys.onRightPressed: video.seek(video.position + 5000)

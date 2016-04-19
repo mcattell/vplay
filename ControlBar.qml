@@ -6,7 +6,7 @@ Item {
     id: controlBar
     width: parent.width
     height: parent.height / 10
-
+    property alias backgroundOpacity : background.opacity
     function onPlayPressed() {
 
 
@@ -38,7 +38,7 @@ Item {
         id: background
         anchors.fill: parent
         color: "#D4D46A"
-
+        opacity: 0.5
         Row {
 
             ControlButton {
