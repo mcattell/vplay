@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>ControlBar.qml</file>
+        <file>ControlButton.qml</file>
+    </qresource>
+    <qresource prefix="/images">
+        <file>images/next.png</file>
+        <file>images/pause.png</file>
+        <file>images/play.png</file>
+        <file>images/stop.png</file>
+    </qresource>
+</RCC>
