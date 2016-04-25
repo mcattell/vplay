@@ -26,4 +26,10 @@ Notes
 =====
 The application doesn't yet include a pick list of videos. Instead, the path to an avi is hard coded for testing. In future the intention is to add a scrollable list of media files and perhaps make it work with VLC streaming server or something similar.
 
+Install gstreamer 1.0 on the Raspberry PI as this is the backend that Qt will use when playing media files. Remove gstreamer 0.1 if it is present, like this:
 
+sudo apt-get purge gstreamer0.1
+sudo apt-get autoremove
+
+Then install gstreamer 1.0
+sudo apt-get install gstreamer 1.0
