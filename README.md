@@ -21,6 +21,9 @@ hew/raspi/sysroot -opensource -confirm-license -make libs -prefix /usr/local/qt5
 
 2. It's necessary to use gstreamer 1.0 because much of the functionality for playing video is enabled in the later version of gstreamer and Qt Multimedia. I wasn't able to play video with gstreamer 0.1 as not all the necessary codecs could be loaded at run time. This problem(s) seem to have been resolved in gstreamer 1.0
 
+
 Notes
 =====
 The application doesn't yet include a pick list of videos. Instead, the path to an avi is hard coded for testing. In future the intention is to add a scrollable list of media files and perhaps make it work with VLC streaming server or something similar.
+
+
