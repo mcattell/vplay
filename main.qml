@@ -85,8 +85,8 @@ Window {
             id: video
             width : parent.width
             height : parent.height
-            source: "file:///home/pi/video/Bates.Motel.S02E03.720p.HDTV.x264-2HD.mkv"
-            //source:"http://download.wavetlan.com/SVV/Media/HTTP/AVI/SUPER/SUPER_test2_H264_16bit_320x240_AR4to3_15fps_KF1to1_1057kbps_AAC_Mono_11025Hz_64kbps.AVI"
+            source: "file:///home/pi/video/bird.avi"
+
 
             onPlaying: {
                 frontScreen.state = "playing_controls_shown"
