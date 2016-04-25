@@ -37,8 +37,8 @@ Item {
     Rectangle {
         id: background
         anchors.fill: parent
-        color: "#D4D46A"
-        opacity: 0.5
+        color: "#00B2FF"
+        opacity: 0.2
         Row {
 
             ControlButton {

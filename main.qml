@@ -43,15 +43,14 @@ Window {
                 name: "playing"
                 PropertyChanges{target: frontScreen; height: mainWindow.height}
                 PropertyChanges{target: controls; y:  mainWindow.height + progressBar.height}
-                PropertyChanges{target: progressBar; y: mainWindow.height}
+                PropertyChanges{target: progressBar; y: 1.1*mainWindow.height }
             },
             State {
                 name: "playing_controls_shown"
                 PropertyChanges{target: frontScreen; height: mainWindow.height}
                 PropertyChanges{target: controls; y:  frontScreen.height - controls.height}
                 PropertyChanges{target: progressBar; y: controls.y - progressBar.height}
-                PropertyChanges{target: controls; backgroundOpacity: 0.4}
-                PropertyChanges{target: progressBar; barOpacity: 0.4}
+                PropertyChanges{target: controls; backgroundOpacity: 0.2}
             }
         ]
 
@@ -111,12 +110,10 @@ Window {
 
     }
     ProgressBar {
-        id: progressBar
-
+        id: progressBar 
     }
 
     ControlBar {
         id: controls
-
     }
 }

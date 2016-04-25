@@ -8,7 +8,7 @@ Item {
     property real position
     property real playedWidth
     property real unplayedWidth
-    property alias barOpacity : unplayed.opacity
+
     Timer {
         id: updateTimer
         interval: 500
@@ -33,23 +33,34 @@ Item {
         anchors.fill: parent
         Rectangle {
             id: played
+
             color: "red"
             height: progress.height
             width: Math.round(playedWidth)
+            MouseArea {
+                id: rewindArea
+            }
         }
         Rectangle {
             id: indicator
-            color: "white"
-            width: 8
-            height: progress.height
 
+
+            color: "white"
+            width: height
+            height: 3*progress.height
+            radius: width/2
+            y: -(progress.height)
         }
 
         Rectangle {
             id: unplayed
             color: "#a8a8a9"
+
             height: progress.height
             width: Math.round(unplayedWidth)
+            MouseArea {
+            id: fastForwardArea
+            }
         }
     }
 }
