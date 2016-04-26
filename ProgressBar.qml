@@ -5,13 +5,15 @@ Item {
 
     id: progress
 
-    height: mainWindow.height / 100
-    width: mainWindow.width
+    height: parent.height / 100
+    width: parent.width
 
     property real position
     property real playedWidth
     property real unplayedWidth
     property real draggedPosition
+
+    property real backgroundOpacity
 
     Timer {
         id: updateTimer
@@ -45,7 +47,7 @@ Item {
         anchors.fill: parent
         Rectangle {
             id: played
-
+            opacity: backgroundOpacity
             color: "red"
             height: progress.height
             width: Math.round(playedWidth)
@@ -56,6 +58,7 @@ Item {
         }
         Rectangle {
             id: indicator
+            opacity: backgroundOpacity
             color: "white"
             width: height
             height: 4*progress.height
@@ -103,6 +106,7 @@ Item {
 
         Rectangle {
             id: unplayed
+            opacity: backgroundOpacity
             color: "#a8a8a9"
             height: progress.height
             width: Math.round(unplayedWidth)
