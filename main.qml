@@ -21,11 +21,12 @@ Window {
     }
 
     Item {
+
         width: parent.width * scaleFactor
         height: parent.height * scaleFactor
         id: mainWindow
 
-        property real scaleFactor : 0.5
+        property real scaleFactor
         property alias videoPosition : video.position
         property alias videoDuration : video.duration
 
@@ -50,7 +51,7 @@ Window {
                 name: "idle"
 
                 PropertyChanges{target: controls; backgroundOpacity: 1.0}
-                PropertyChanges{target: mainWindow; scaleFactor: 0.5;}
+                PropertyChanges{target: mainWindow; scaleFactor: 0.8;}
 
             },
             State {
@@ -176,6 +177,9 @@ Window {
         ControlBar {
             id: controls
             y: frontScreen.height - controls.height
+        }
+        MediaList {
+            id: list
         }
     }
 }

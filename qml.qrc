@@ -5,6 +5,7 @@
         <file>ControlButton.qml</file>
         <file>ProgressBar.qml</file>
         <file>TimeDisplay.qml</file>
+        <file>MediaList.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/next.png</file>
