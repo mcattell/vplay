@@ -16,21 +16,24 @@ Window {
     }
 
 
+    FontLoader {
+        id: openSans
+        source: "qrc:/fonts/fonts/OpenSans-Regular.ttf"
+    }
+
     Item {
 
         id: frontScreen
-        height: mainWindow.height - controls.height
+        height: mainWindow.height
         width: mainWindow.width
         state: "idle"
 
         onStateChanged: {
-            console.log(state)
+
             if (state === "playing_controls_shown") {
 
                 showTimer.start()
             }
-
-
         }
 
         states : [
@@ -51,14 +54,14 @@ Window {
                 PropertyChanges{target: frontScreen; height: mainWindow.height}
                 PropertyChanges{target: controls; y:  frontScreen.height - controls.height}
                 PropertyChanges{target: progressBar; y: controls.y - progressBar.height}
-                PropertyChanges{target: controls; backgroundOpacity: 0.2}
+                PropertyChanges{target: controls; backgroundOpacity: 0.3}
             },
             State {
                 name: "seeking"
                 PropertyChanges{target: frontScreen; height: mainWindow.height}
                 PropertyChanges{target: controls; y:  frontScreen.height - controls.height}
                 PropertyChanges{target: progressBar; y: controls.y - progressBar.height}
-                PropertyChanges{target: controls; backgroundOpacity: 0.2}
+                PropertyChanges{target: controls; backgroundOpacity: 0.3}
 
             }
 
@@ -79,7 +82,7 @@ Window {
 
         Timer {
             id: showTimer
-            interval: 3000
+            interval: 10000
             running: false
             onTriggered: {
 
@@ -87,9 +90,7 @@ Window {
                     frontScreen.state = "playing"
                 else if (frontScreen.state === "playing")
                     frontScreen.state = "playing_controls_shown"
-                else if (frontScreen.state === "") {
 
-                }
             }
         }
 
@@ -102,9 +103,11 @@ Window {
 
             onPlaying: {
                 frontScreen.state = "playing_controls_shown"
+                startTimeObject.setMilliseconds(video.duration)
             }
             onStopped: {
                 frontScreen.state = "idle"
+
             }
             onPaused: {
                 frontScreen.state = "playing_controls_shown"
@@ -123,7 +126,7 @@ Window {
 
     }
     ProgressBar {
-        id: progressBar 
+        id: progressBar
     }
 
     ControlBar {

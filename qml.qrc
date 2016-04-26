@@ -4,11 +4,15 @@
         <file>ControlBar.qml</file>
         <file>ControlButton.qml</file>
         <file>ProgressBar.qml</file>
+        <file>TimeDisplay.qml</file>
     </qresource>
     <qresource prefix="/images">
         <file>images/next.png</file>
         <file>images/pause.png</file>
         <file>images/play.png</file>
         <file>images/stop.png</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file>fonts/OpenSans-Regular.ttf</file>
     </qresource>
 </RCC>

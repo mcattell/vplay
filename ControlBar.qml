@@ -5,7 +5,7 @@ Item {
 
     id: controlBar
     width: parent.width
-    height: parent.height / 10
+    height: parent.height / 8
 
     property alias backgroundOpacity : background.opacity
 
@@ -79,6 +79,11 @@ Item {
                 Component.onCompleted: {
                     controlPressed.connect(controlBar.onNextPressed)
                 }
+            }
+            TimeDisplay {
+                id: time
+                width: 8*next.width
+                height: controlBar.height
             }
         }
     }

@@ -30,6 +30,7 @@ Item {
         position = 100 - (((mainWindow.videoDuration - mainWindow.videoPosition)/mainWindow.videoDuration)*100)
         playedWidth = (position*parent.width)/100
         unplayedWidth = progress.width - played.width
+        currentTimeObject.setMilliseconds(mainWindow.videoPosition)
     }
 
     function calculateDraggedPosition(xPos) {
@@ -87,8 +88,13 @@ Item {
                 onReleased: {
 
                     if (video.playbackState === MediaPlayer.PausedState) {
-                        video.play()
+                        video.pause()
                         updateTimer.start()
+                        frontScreen.state = "playing_controls_shown"
+                    }
+                    else if (video.playbackState === MediaPlayer.PlayingState) {
+                        updateTimer.start()
+                        video.play()
                         frontScreen.state = "playing_controls_shown"
                     }
                 }
