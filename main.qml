@@ -24,6 +24,7 @@ Window {
         state: "idle"
 
         onStateChanged: {
+            console.log(state)
             if (state === "playing_controls_shown") {
 
                 showTimer.start()
@@ -51,7 +52,16 @@ Window {
                 PropertyChanges{target: controls; y:  frontScreen.height - controls.height}
                 PropertyChanges{target: progressBar; y: controls.y - progressBar.height}
                 PropertyChanges{target: controls; backgroundOpacity: 0.2}
+            },
+            State {
+                name: "seeking"
+                PropertyChanges{target: frontScreen; height: mainWindow.height}
+                PropertyChanges{target: controls; y:  frontScreen.height - controls.height}
+                PropertyChanges{target: progressBar; y: controls.y - progressBar.height}
+                PropertyChanges{target: controls; backgroundOpacity: 0.2}
+
             }
+
         ]
 
         transitions: [
@@ -77,6 +87,9 @@ Window {
                     frontScreen.state = "playing"
                 else if (frontScreen.state === "playing")
                     frontScreen.state = "playing_controls_shown"
+                else if (frontScreen.state === "") {
+
+                }
             }
         }
 
@@ -84,7 +97,7 @@ Window {
             id: video
             width : parent.width
             height : parent.height
-            source: "file:///home/pi/video/bird.avi"
+            source: "file:///home/pi/video/liza.avi"
 
 
             onPlaying: {

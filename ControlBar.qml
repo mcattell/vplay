@@ -6,7 +6,9 @@ Item {
     id: controlBar
     width: parent.width
     height: parent.height / 10
+
     property alias backgroundOpacity : background.opacity
+
     function onPlayPressed() {
 
 
@@ -35,14 +37,18 @@ Item {
     }
 
     Rectangle {
+
         id: background
-        anchors.fill: parent
         color: "#00B2FF"
-        opacity: 0.2
+        opacity: 0.4
+
         Row {
+
 
             ControlButton {
                 id: play
+                height: controlBar.height
+                width: height
                 buttonSourceImage: (video.playbackState === MediaPlayer.PlayingState) ? "qrc:/images/images/pause.png" : "qrc:/images/images/play.png"
                 Component.onCompleted: {
                     controlPressed.connect(controlBar.onPlayPressed)
@@ -54,6 +60,8 @@ Item {
             }
             ControlButton {
                 id: stop
+                height: controlBar.height
+                width: height
                 buttonSourceImage: "qrc:/images/images/stop.png"
                 Component.onCompleted: {
                     controlPressed.connect(controlBar.onStopPressed)
@@ -65,6 +73,8 @@ Item {
             }
             ControlButton {
                 id: next
+                height: controlBar.height
+                width: height
                 buttonSourceImage: "qrc:/images/images/next.png"
                 Component.onCompleted: {
                     controlPressed.connect(controlBar.onNextPressed)

@@ -2,30 +2,28 @@ import QtQuick 2.0
 
 Item {
 
+    id: container
     property alias buttonSourceImage : icon.source
-    height: controlBar.height
-    width: height
-
     signal controlPressed()
 
+    MouseArea {
+        id: mousePad
+        anchors.fill: parent
+
+        onClicked: {
+
+            controlPressed()
+        }
+    }
     Image {
         id: icon
         anchors.fill: parent
 
         fillMode: Image.PreserveAspectFit
-        width: parent.width
-        height: parent.height
+        scale:   0.7
         sourceSize.height: 200
         sourceSize.width: 200
 
-        MouseArea {
-            id: mousePad
-            anchors.fill: parent
 
-            onClicked: {
-
-                controlPressed()
-            }
-        }
     }
 }
