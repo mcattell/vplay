@@ -15,6 +15,7 @@ Item {
 
     property real backgroundOpacity
 
+
     Timer {
         id: updateTimer
         interval: 500
@@ -27,30 +28,41 @@ Item {
         updateTimer.start()
     }
 
+    function updateWidth() {
+
+        calculatePosition()
+    }
+
     function calculatePosition() {
 
         position = 100 - (((mainWindow.videoDuration - mainWindow.videoPosition)/mainWindow.videoDuration)*100)
         playedWidth = (position*parent.width)/100
-        unplayedWidth = progress.width - played.width
+        unplayedWidth = progress.width - played.width - indicator.width
         currentTimeObject.setMilliseconds(mainWindow.videoPosition)
+
     }
 
     function calculateDraggedPosition(xPos) {
 
         playedWidth = xPos
-        unplayedWidth = progress.width - xPos
+        unplayedWidth = progress.width - xPos - indicator.width
         video.seek((xPos/progress.width)*mainWindow.videoDuration)
     }
 
     Row
     {
         anchors.fill: parent
+
         Rectangle {
             id: played
             opacity: backgroundOpacity
             color: "red"
             height: progress.height
-            width: Math.round(playedWidth)
+            width: playedWidth
+
+            border.color: "black"
+            border.width: 1
+
             MouseArea {
                 id: rewindArea
                 anchors.fill: parent
@@ -64,6 +76,8 @@ Item {
             height: 4*progress.height
             radius: width/2
             y: -1.5*progress.height
+            border.color: "black"
+            border.width: 1
 
             onXChanged: {
                 if (indicatorMouseArea.drag.active) {
@@ -85,7 +99,7 @@ Item {
                     if (video.playbackState === MediaPlayer.PlayingState) {
                         updateTimer.stop()
                         video.pause()
-                        frontScreen.state = "seeking"
+                        mainWindow.state = "seeking"
                     }
                 }
                 onReleased: {
@@ -93,12 +107,12 @@ Item {
                     if (video.playbackState === MediaPlayer.PausedState) {
                         video.pause()
                         updateTimer.start()
-                        frontScreen.state = "playing_controls_shown"
+                        mainWindow.state = "playing_controls_shown"
                     }
                     else if (video.playbackState === MediaPlayer.PlayingState) {
                         updateTimer.start()
                         video.play()
-                        frontScreen.state = "playing_controls_shown"
+                        mainWindow.state = "playing_controls_shown"
                     }
                 }
             }
@@ -109,7 +123,9 @@ Item {
             opacity: backgroundOpacity
             color: "#a8a8a9"
             height: progress.height
-            width: Math.round(unplayedWidth)
+            width:unplayedWidth
+            border.color: "black"
+            border.width: 1
             MouseArea {
                 id: fastForwardArea
                 anchors.fill: parent

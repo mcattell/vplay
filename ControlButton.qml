@@ -24,6 +24,5 @@ Item {
         sourceSize.height: 400
         sourceSize.width: 400
 
-
     }
 }

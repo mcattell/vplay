@@ -25,104 +25,134 @@ Window {
         height: parent.height * scaleFactor
         id: mainWindow
 
-        property real scaleFactor : 1.0
+        property real scaleFactor : 0.5
         property alias videoPosition : video.position
         property alias videoDuration : video.duration
 
-        Item {
+
+
+        state: "idle"
+
+        onWidthChanged:  {
+            progressBar.updateWidth()
+        }
+
+
+        onStateChanged: {
+
+            if (state === "playing_controls_shown") {
+
+                showTimer.start()
+            }
+        }
+        states : [
+            State {
+                name: "idle"
+
+                PropertyChanges{target: controls; backgroundOpacity: 1.0}
+                PropertyChanges{target: mainWindow; scaleFactor: 0.5;}
+
+            },
+            State {
+                name: "playing"
+
+                PropertyChanges{target: controls; backgroundOpacity: 0.0}
+                PropertyChanges{target: mainWindow; scaleFactor: 1.0;}
+            },
+            State {
+                name: "playing_controls_shown"
+
+                PropertyChanges{target: controls; backgroundOpacity: 0.5}
+                PropertyChanges{target: mainWindow; scaleFactor: 1.0;}
+            },
+            State {
+                name: "seeking"
+
+                PropertyChanges{target: controls; backgroundOpacity: 0.5}
+                PropertyChanges{target: mainWindow; scaleFactor: 1.0;}
+            }
+
+        ]
+        transitions: [
+            Transition {
+                from: "idle"; to: "playing_controls_shown";
+
+                PropertyAnimation{ target: controls; property: "backgroundOpacity"; duration: 600}
+                PropertyAnimation{ target: mainWindow; property: "scaleFactor"; duration: 600}
+            },
+            Transition {
+                from: "playing"; to: "idle";
+
+                PropertyAnimation{ target: controls; property: "backgroundOpacity"; duration: 600}
+                PropertyAnimation{ target: mainWindow; property: "scaleFactor"; duration: 600}
+            },
+            Transition {
+                from: "playing_controls_shown"; to: "playing";
+
+                PropertyAnimation{ target: controls; property: "backgroundOpacity"; duration: 600}
+                PropertyAnimation{ target: mainWindow; property: "scaleFactor"; duration: 600}
+            },
+            Transition {
+                from: "playing_controls_shown"; to: "idle";
+
+                PropertyAnimation{ target: controls; property: "backgroundOpacity"; duration: 600}
+                PropertyAnimation{ target: mainWindow; property: "scaleFactor"; duration: 600}
+            }
+        ]
+        Rectangle {
 
             id: frontScreen
             height: parent.height
             width: parent.width
-            state: "idle"
-
-            onStateChanged: {
-
-                if (state === "playing_controls_shown") {
-
-                    showTimer.start()
-                }
-            }
-
-            states : [
-                State {
-                    name: "idle"
-                    PropertyChanges{target: frontScreen; height: mainWindow.height - controls.height}
-                    PropertyChanges{target: controls; y:  frontScreen.height}
-                    PropertyChanges{target: progressBar; y: controls.y - progressBar.height}
-                },
-                State {
-                    name: "playing"
-                    PropertyChanges{target: frontScreen; height: mainWindow.height}
-                    PropertyChanges{target: controls; y:  mainWindow.height + progressBar.height}
-                    PropertyChanges{target: progressBar; y: 1.1*mainWindow.height }
-                },
-                State {
-                    name: "playing_controls_shown"
-                    PropertyChanges{target: frontScreen; height: mainWindow.height}
-                    PropertyChanges{target: controls; y:  frontScreen.height - controls.height}
-                    PropertyChanges{target: progressBar; y: controls.y - progressBar.height}
-                    PropertyChanges{target: controls; backgroundOpacity: 0.4}
-                    PropertyChanges{target: progressBar; backgroundOpacity: controls.backgroundOpacity}
-                },
-                State {
-                    name: "seeking"
-                    PropertyChanges{target: frontScreen; height: mainWindow.height}
-                    PropertyChanges{target: controls; y:  frontScreen.height - controls.height}
-                    PropertyChanges{target: progressBar; y: controls.y - progressBar.height}
-                    PropertyChanges{target: controls; backgroundOpacity: 0.4}
-                    PropertyChanges{target: progressBar; backgroundOpacity: controls.backgroundOpacity}
-
-                }
-
-            ]
-
-            transitions: [
-                Transition {
-                    from: "idle"; to: "playing";
-                    PropertyAnimation{ target: frontScreen; property: "height"; }
-                    PropertyAnimation{ target: controls; property: "y"; }
-                },
-                Transition {
-                    from: "playing"; to: "idle";
-                    PropertyAnimation{ target: frontScreen; property: "height"; }
-                    PropertyAnimation{ target: controls; property: "y"; }
-                }
-            ]
 
             Timer {
+
                 id: showTimer
                 interval: 10000
                 running: false
+
                 onTriggered: {
 
-                    if (frontScreen.state === "playing_controls_shown")
-                        frontScreen.state = "playing"
-                    else if (frontScreen.state === "playing")
-                        frontScreen.state = "playing_controls_shown"
+                    if (mainWindow.state === "playing_controls_shown")
+                        mainWindow.state = "playing"
+                    else if (mainWindow.state === "playing")
+                        mainWindow.state = "playing_controls_shown"
 
                 }
             }
 
             Video {
+
                 id: video
                 width : parent.width
                 height : parent.height
                 source: "file:///home/pi/video/liza.avi"
                 fillMode: VideoOutput.PreserveAspectFit
 
+                Component.onCompleted:    {
+
+                    seekBeginning()
+                }
+
+                function seekBeginning() {
+
+                    play()
+                    pause()
+                    if (seekable) {
+                        seek(0)
+                    }
+                    mainWindow.state = "idle"
+                }
 
                 onPlaying: {
-                    frontScreen.state = "playing_controls_shown"
+                    mainWindow.state = "playing_controls_shown"
                     startTimeObject.setMilliseconds(video.duration)
-
                 }
                 onStopped: {
-                    frontScreen.state = "idle"
-
+                    seekBeginning()
                 }
                 onPaused: {
-                    frontScreen.state = "playing_controls_shown"
+                    mainWindow.state = "playing_controls_shown"
                 }
 
                 MouseArea {
@@ -130,7 +160,7 @@ Window {
                     onClicked: {
 
                         if (video.playbackState === MediaPlayer.PlayingState || video.playbackState === MediaPlayer.PausedState)
-                            frontScreen.state = "playing_controls_shown"
+                            mainWindow.state = "playing_controls_shown"
                     }
                 }
                 focus: true
@@ -139,10 +169,13 @@ Window {
         }
         ProgressBar {
             id: progressBar
+            y: controls.y - height
+            backgroundOpacity:  controls.backgroundOpacity
         }
 
         ControlBar {
             id: controls
+            y: frontScreen.height - controls.height
         }
     }
 }
