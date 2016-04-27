@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtMultimedia 5.6
+import com.vplay.qmltypes 1.0
 
 Item {
 
@@ -38,7 +39,7 @@ Item {
         position = 100 - (((mainWindow.videoDuration - mainWindow.videoPosition)/mainWindow.videoDuration)*100)
         playedWidth = (position*parent.width)/100
         unplayedWidth = progress.width - played.width - indicator.width
-        currentTimeObject.setMilliseconds(mainWindow.videoPosition)
+        currentTimeObject.setMilliseconds(mainWindow.videoPosition, TimeDisplayType.CurrentTime)
 
     }
 

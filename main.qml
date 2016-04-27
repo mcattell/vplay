@@ -1,6 +1,7 @@
 import QtQuick 2.5
 import QtQuick.Window 2.2
 import QtMultimedia 5.6
+import com.vplay.qmltypes 1.0
 
 Window {
     id: topWindow
@@ -63,13 +64,13 @@ Window {
             State {
                 name: "playing_controls_shown"
 
-                PropertyChanges{target: controls; backgroundOpacity: 0.5}
+                PropertyChanges{target: controls; backgroundOpacity: 0.9}
                 PropertyChanges{target: mainWindow; scaleFactor: 1.0;}
             },
             State {
                 name: "seeking"
 
-                PropertyChanges{target: controls; backgroundOpacity: 0.5}
+                PropertyChanges{target: controls; backgroundOpacity: 0.9}
                 PropertyChanges{target: mainWindow; scaleFactor: 1.0;}
             }
 
@@ -127,7 +128,8 @@ Window {
                 id: video
                 width : parent.width
                 height : parent.height
-                source: "file:///home/pi/video/liza.avi"
+                //source: "file:///home/pi/video/liza.avi"
+                source: "file:///home/pi/video/why_some_people.mp4"
                 fillMode: VideoOutput.PreserveAspectFit
 
                 Component.onCompleted:    {
@@ -147,7 +149,7 @@ Window {
 
                 onPlaying: {
                     mainWindow.state = "playing_controls_shown"
-                    startTimeObject.setMilliseconds(video.duration)
+                    startTimeObject.setMilliseconds(video.duration, TimeDisplayType.TotalTime)
                 }
                 onStopped: {
                     seekBeginning()

@@ -1,26 +1,10 @@
 import QtQuick 2.5
 import QtQuick.Controls 1.4
 import QtMultimedia 5.6
+import com.vplay.qmltypes 1.0
 
 Item {
     id: timerDisplay
-
-    property int totalHours : startTimeObject.hours
-    property int totalMinutes : startTimeObject.minutes
-    property int totalSeconds : startTimeObject.seconds
-
-    property int currentHours : currentTimeObject.hours
-    property int currentMinutes : currentTimeObject.minutes
-    property int currentSeconds : currentTimeObject.seconds
-
-    function pad(n, width, z) {
-
-        z = z || '0';
-        n = n + '';
-        return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-    }
-
-
 
 
     Row {
@@ -28,7 +12,7 @@ Item {
             id: current
             width: 1.8*controlBar.height
             height: controlBar.height
-            text: (video.playbackState === MediaPlayer.PlayingState || video.playbackState === MediaPlayer.PausedState) ? (startTimeObject.hours > 0) ? pad(currentHours, 2)  + ":" : "" + pad(currentMinutes, 2) + ":" + pad(currentSeconds, 2) : ""
+            text: currentTimeObject.currentTime
             font.pixelSize: 24*mainWindow.scaleFactor
             font.bold: true
             font.family: openSans.name
@@ -52,7 +36,7 @@ Item {
             id: total
             width: 1.8*controlBar.height
             height: controlBar.height
-            text: (video.playbackState === MediaPlayer.PlayingState || video.playbackState === MediaPlayer.PausedState) ? (startTimeObject.hours > 0) ? pad(totalHours, 2) + ":"  : "" + pad(totalMinutes, 2) + ":" + pad(totalSeconds, 2) : ""
+            text: startTimeObject.totalTime
             font.pixelSize: 24*mainWindow.scaleFactor
             font.bold: true
             font.family: openSans.name

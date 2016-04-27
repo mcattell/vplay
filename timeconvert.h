@@ -2,35 +2,41 @@
 #define TIMECONVERT_H
 
 #include <QObject>
-
+#include <QtQml>
 
 class TimeConvert : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(int hours MEMBER m_hours NOTIFY hoursChanged)
-    Q_PROPERTY(int minutes MEMBER m_minutes NOTIFY minutesChanged)
-    Q_PROPERTY(int seconds MEMBER m_seconds NOTIFY secondsChanged)
+    Q_PROPERTY(QString totalTime MEMBER m_totalTime NOTIFY totalTimeChanged)
+    Q_PROPERTY(QString currentTime MEMBER m_currentTime NOTIFY currentTimeChanged)
 
 public:
+
+    Q_ENUMS(TimeDisplayType)
+
+    enum TimeDisplayType {
+        CurrentTime,
+        TotalTime
+    };
+
     explicit TimeConvert(QObject *parent = 0);
 
+    static void declareQML() {
+        qmlRegisterType<TimeConvert>("com.vplay.qmltypes", 1, 0, "TimeDisplayType");
+    }
+
 signals:
-    void hoursChanged(int hours);
-    void minutesChanged(int minutes);
-    void secondsChanged(int seconds);
+    void totalTimeChanged(QString total);
+    void currentTimeChanged(QString current);
 
 public slots:
-    void setMilliseconds(int ms);
+    void setMilliseconds(int ms, int type);
 
 private:
 
-
-    int m_hours;
-    int m_minutes;
-    int m_seconds;
-
-    int m_previous;
+    QString m_totalTime, m_currentTime;
+    bool m_hasHour;
 };
 
 #endif // TIMECONVERT_H
