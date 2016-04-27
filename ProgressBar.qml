@@ -117,8 +117,8 @@ Item {
                         }
                         else {
 
-                            video.pause()
                             updateTimer.start()
+                            video.pause()
                             mainWindow.state = "playing_controls_shown"
                         }
                     }
