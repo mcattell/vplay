@@ -35,11 +35,11 @@ Item {
     }
 
     function onFastForwardPressed() {
-        video.seek(video.position + 5000)
+        video.seek(video.position + 10000)
     }
 
     function onRewindPressed() {
-        video.seek(video.position - 5000)
+        video.seek(video.position - 10000)
     }
 
     function onNextPressed() {
