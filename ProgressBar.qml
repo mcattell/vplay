@@ -16,6 +16,7 @@ Item {
 
     property real backgroundOpacity
 
+    property int previousState
 
     Timer {
         id: updateTimer
@@ -98,6 +99,7 @@ Item {
                 onPressed: {
 
                     if (video.playbackState === MediaPlayer.PlayingState) {
+                        previousState = MediaPlayer.PlayingState
                         updateTimer.stop()
                         video.pause()
                         mainWindow.state = "seeking"
@@ -106,15 +108,21 @@ Item {
                 onReleased: {
 
                     if (video.playbackState === MediaPlayer.PausedState) {
-                        video.pause()
-                        updateTimer.start()
-                        mainWindow.state = "playing_controls_shown"
+
+                        if (previousState === MediaPlayer.PlayingState) {
+
+                            updateTimer.start()
+                            video.play()
+                            mainWindow.state = "playing_controls_shown"
+                        }
+                        else {
+
+                            video.pause()
+                            updateTimer.start()
+                            mainWindow.state = "playing_controls_shown"
+                        }
                     }
-                    else if (video.playbackState === MediaPlayer.PlayingState) {
-                        updateTimer.start()
-                        video.play()
-                        mainWindow.state = "playing_controls_shown"
-                    }
+
                 }
             }
         }
